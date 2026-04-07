@@ -1,0 +1,52 @@
+# Environment variables and secrets
+.env
+.env.*
+!*.example
+service-account.json
+credentials/
+backend/credentials/
+
+# AI Tooling & Internal Metadata
+.agents/
+.gemini/
+
+# Python caching and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# Node and frontend build artifacts
+node_modules/
+npm-debug.log
+yarn-error.log
+.next/
+out/
+build/
+.swc/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS specific temp files
+.DS_Store
+Thumbs.db
+
+# Database (if testing locally with sqlite fallback)
+*.sqlite3
+*.db
+
+# Temporary test data & artifacts
+captured_emails.txt
+frontend/lint_output.txt
+frontend/tsc_output.txt
+frontend/tsc_output_cmd.txt
