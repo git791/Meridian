@@ -79,9 +79,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Handle CORS origins if passed as comma-separated string or JSON list
+origins = settings.CORS_ORIGINS
+if isinstance(origins, str):
+    import json
+    try:
+        origins = json.loads(origins)
+    except Exception:
+        origins = [o.strip() for o in origins.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

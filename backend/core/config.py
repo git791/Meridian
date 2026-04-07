@@ -25,8 +25,8 @@ class Settings(BaseSettings):
     DEMO_TOKEN: str = ""
 
     # App
-    SECRET_KEY: str = "change-me-in-production"
-    CORS_ORIGINS: list[str] = [
+    # Resilient CORS: can be JSON list string or comma-separated string
+    CORS_ORIGINS: str | list[str] = [
         "http://localhost:3000", 
         "http://localhost:3005", 
         "http://127.0.0.1:3000", 
