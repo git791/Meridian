@@ -4,10 +4,9 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 import logging
 import time
-from fastapi.middleware.cors import CORSMiddleware
-
 from api.routes import router
 from core.config import settings
+from models.database import engine, Base
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -60,6 +59,10 @@ async def background_reminder_task():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Ensure tables are created on startup (useful for Cloud Run/Docker)
+    logger.info("Checking database tables…")
+    Base.metadata.create_all(bind=engine)
+    
     logger.info("Meridian starting up — demo_mode=%s", settings.DEMO_MODE)
     import asyncio
     reminder_task = asyncio.create_task(background_reminder_task())
@@ -68,14 +71,13 @@ async def lifespan(app: FastAPI):
     logger.info("Meridian shutting down")
 
 
+# App initialization
 app = FastAPI(
     title="Meridian — Smart Meeting Scheduler",
     version="1.0.0",
     description="Multi-agent AI scheduling powered by Google Cloud & Gemini",
     lifespan=lifespan,
 )
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
