@@ -1,0 +1,19 @@
+# Build artifacts
+.next
+node_modules
+dist
+build
+
+# Environment variables (don't bake local ones into cloud build)
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific
+.DS_Store
+Thumbs.db
