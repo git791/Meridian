@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { getEvents } from "@/lib/api";
 
 const HOURS = Array.from({ length: 10 }, (_, i) => i + 8); // 8am–5pm
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -42,8 +43,7 @@ export default function CalendarView() {
     // Fetch real data from the database
     const loadRealEvents = async () => {
       try {
-        const res = await fetch('/api/v1/events?demo=true');
-        const data = await res.json();
+        const data = await getEvents();
         // We filter out anything that looks like the demo data 
         // to avoid duplicates if the backend returns them
         setDbEvents(data);

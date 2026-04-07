@@ -6,13 +6,15 @@ export interface AgentEvent {
     summary?: any;
 }
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "https://meridian-api-845410043165.us-central1.run.app";
+
 export function streamSchedule(
     data: { message: string; audio_file?: string },
     onEvent: (event: AgentEvent) => void,
     onError: () => void
 ) {
     const controller = new AbortController();
-    const baseUrl = ""; // Use relative path to hit Next.js rewrite proxy
+    const baseUrl = BACKEND_URL;
 
     fetch(`${baseUrl}/api/v1/schedule?demo=true`, {
         method: "POST",
@@ -60,9 +62,8 @@ export function streamSchedule(
     return { abort: () => controller.abort() };
 }
 
-// THE NEW CONFIRM FUNCTION
 export async function confirmSlot(slot: { start: string; end: string }, title: string) {
-    const baseUrl = ""; // Use relative path to hit Next.js rewrite proxy
+    const baseUrl = BACKEND_URL;
 
     const response = await fetch(`${baseUrl}/api/v1/calendar/confirm?demo=true`, {
         method: "POST",
@@ -75,5 +76,17 @@ export async function confirmSlot(slot: { start: string; end: string }, title: s
     });
 
     if (!response.ok) throw new Error("Failed to confirm slot");
+    return await response.json();
+}
+
+export async function getSummaries() {
+    const response = await fetch(`${BACKEND_URL}/api/v1/summaries?demo=true`);
+    if (!response.ok) throw new Error("Failed to fetch summaries");
+    return await response.json();
+}
+
+export async function getEvents() {
+    const response = await fetch(`${BACKEND_URL}/api/v1/events?demo=true`);
+    if (!response.ok) throw new Error("Failed to fetch events");
     return await response.json();
 }

@@ -5,7 +5,7 @@ import ChatInput from "@/components/ChatInput";
 import AgentTrace from "@/components/AgentTrace";
 import CalendarView from "@/components/CalendarView";
 import MeetingSummary from "@/components/MeetingSummary";
-import { streamSchedule, confirmSlot, AgentEvent } from "@/lib/api";
+import { streamSchedule, confirmSlot, getSummaries, AgentEvent } from "@/lib/api";
 
 type Tab = "schedule" | "calendar" | "summaries";
 
@@ -33,8 +33,7 @@ export default function Home() {
     // Function to pull real data from the DB
     const fetchSummaries = async () => {
         try {
-            const res = await fetch('/api/v1/summaries?demo=true');
-            const data = await res.json();
+            const data = await getSummaries();
             setDbSummaries(data);
             if (data.length > 0) {
                 // Default the summary view to the latest one
